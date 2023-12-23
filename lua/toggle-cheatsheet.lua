@@ -6,7 +6,7 @@ local M={
 function M.setup()
   vim.api.nvim_create_augroup( 'TCSTabChanged', {} )
   vim.api.nvim_create_autocmd( {'TabEnter'}, {
-  group = 'chdirForLazygit',
+  group = 'TCSTabChanged',
   callback = function()
     M.continueCS()
   end
