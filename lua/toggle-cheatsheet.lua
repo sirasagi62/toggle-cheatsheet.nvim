@@ -71,7 +71,7 @@ function M.closeCheatSheetWin()
   end
 end
 function M.toggle(text)
-  if M.cheatSheetWin then
+  if M.cheatSheetWin and M.CSText==text then
     M.closeCheatSheetWin()
   else
     M.openCheatSheetWin(text)
