@@ -3,14 +3,17 @@ local M={
   cheatSheetWin = nil,
   CSText = ''
 }
-function M.setup()
-  vim.api.nvim_create_augroup( 'TCSTabChanged', {} )
-  vim.api.nvim_create_autocmd( {'TabEnter'}, {
-  group = 'TCSTabChanged',
-  callback = function()
-    M.continueCS()
+function M.setup(isCSPersistant)
+  if isCSPersistant then
+    vim.api.nvim_create_augroup( 'TCSTabChanged', {} )
+    vim.api.nvim_create_autocmd( {'TabEnter'}, {
+      group = 'TCSTabChanged',
+      callback = function()
+        M.continueCS()
+      end
+    })
   end
-})
+  return M
 end
 function M.countLinesAndColumns(text)
     local lineCount = -1
@@ -75,6 +78,8 @@ function M.toggle(text)
   end
 end
 function M.continueCS()
-  M.openCheatSheetWin(M.CSText)
+  if M.cheatSheetWin then
+    M.openCheatSheetWin(M.CSText)
+  end
 end
 return M
