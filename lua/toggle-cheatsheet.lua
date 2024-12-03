@@ -15,6 +15,7 @@ function M.setup(isCSPersistant)
   end
   return M
 end
+
 function M.countLinesAndColumns(text)
     local lineCount = -1
     local maxColumnCount = 0
@@ -29,6 +30,40 @@ function M.countLinesAndColumns(text)
     end
 
     return lineCount, maxColumnCount
+end
+
+function M.repeatCharacter(c,n)
+  local s = ""
+  for i = 1, n, 1 do
+    s = s .. c
+  end
+  return s
+end
+
+function M.conf(easymap)
+  local formalTbl = {}
+  for _,v in ipairs(easymap) do
+    formalTbl[#formalTbl+1] = {map=v[1],desc=v[2]}
+  end
+end
+function M.createCheatSheetFromSubmodeKeymap(smKeymap)
+  -- Calculate maxmimum keymap width
+  local maximumKeymapWidth = 0
+  local tbl = {}
+  for _,v in ipairs(smKeymap) do
+    local map = v["map"]
+    local currentKeymapWidth = vim.fn.strdisplaywidth(map)
+    tbl[#tbl+1] = {map=map,map_width=currentKeymapWidth,desc=v["desc"]}
+    maximumKeymapWidth = currentKeymapWidth > maximumKeymapWidth and currentKeymapWidth or maximumKeymapWidth
+  end
+
+  -- Generate Cheat Sheet Text
+  local tcsText = ""
+  for _,v in ipairs(tbl) do
+    local desc =v.desc or "<No Description>"
+    tcsText = tcsText .. v.map .. M.repeatCharacter(" ",maximumKeymapWidth - v.map_width) .. " : " .. desc .. "\n"
+  end
+  return tcsText
 end
 
 function M.openCheatSheetWin(text)
