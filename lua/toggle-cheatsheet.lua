@@ -1,6 +1,5 @@
 local vim = vim
 
----@class ToggleCheatSheet
 local M={
   cheatSheetWin = nil,
   CSText = ''
