@@ -1,9 +1,16 @@
 local vim = vim
+
+---@class ToggleCheatSheet
 local M={
   cheatSheetWin = nil,
   CSText = ''
 }
+
+---Initializer of ToggleCheatSheet. It is strongly recommended that you specify **true** for this function unless you have a specific reason not to.
+---@param isCSPersistant boolean Variable that determines whether the toggle cheat sheet remains visible when switching tabs.
+---@return ToggleCheatSheet
 function M.setup(isCSPersistant)
+  isCSPersistant = isCSPersistant==false and false or true
   if isCSPersistant then
     vim.api.nvim_create_augroup( 'TCSTabChanged', {} )
     vim.api.nvim_create_autocmd( {'TabEnter'}, {
@@ -34,18 +41,30 @@ end
 
 function M.repeatCharacter(c,n)
   local s = ""
-  for i = 1, n, 1 do
+  for _ = 1, n, 1 do
     s = s .. c
   end
   return s
 end
 
+---@alias FormalFormat {map:string,desc:string}[]
+
+---Convert a tuple-based "easy" keymap configurations description to "formal" format.
+---Both of "easy" format and "formal" format is compartible with "sirasagi62/nvim-submode" keymap format.
+---@param easymap {[1]:string, [2]:string}[] "Easy" keymap format
+---@return FormalFormat "Formal" keymap format
 function M.conf(easymap)
   local formalTbl = {}
   for _,v in ipairs(easymap) do
     formalTbl[#formalTbl+1] = {map=v[1],desc=v[2]}
   end
+  return formalTbl
 end
+
+---Convert a keymap list described in FormalFormat to text that should be drawn in a cheat sheet window.
+---The type of smKeymap is compartible with "sirasagi62/nvim-submode" keymap format.
+---@param smKeymap FormalFormat
+---@return string
 function M.createCheatSheetFromSubmodeKeymap(smKeymap)
   -- Calculate maxmimum keymap width
   local maximumKeymapWidth = 0
@@ -66,6 +85,10 @@ function M.createCheatSheetFromSubmodeKeymap(smKeymap)
   return tcsText
 end
 
+---Function to open cheat sheet window.
+---If a cheat sheet is already opened, the function override the window by implicitly closing the old one.
+---@param text string
+---@return unknown
 function M.openCheatSheetWin(text)
   M.closeCheatSheetWin()
   local api=vim.api
@@ -98,6 +121,7 @@ function M.openCheatSheetWin(text)
   return win
 end
 
+---A function to close an opening window managed by the plugin.
 function M.closeCheatSheetWin()
   if M.cheatSheetWin then
     vim.api.nvim_win_close(M.cheatSheetWin,true)
@@ -105,6 +129,10 @@ function M.closeCheatSheetWin()
     M.CSText = ''
   end
 end
+
+---A function to toggle cheat sheet window.
+---If a different window is already opened, the function will override the window by the given new one.
+---@param text string
 function M.toggle(text)
   if M.cheatSheetWin and M.CSText==text then
     M.closeCheatSheetWin()
@@ -112,6 +140,8 @@ function M.toggle(text)
     M.openCheatSheetWin(text)
   end
 end
+
+-- An internal function to keep opening window across changing tabs.
 function M.continueCS()
   if M.cheatSheetWin then
     M.openCheatSheetWin(M.CSText)
