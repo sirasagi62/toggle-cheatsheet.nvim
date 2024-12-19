@@ -1,27 +1,30 @@
-## toggle-cheatsheet.nvim
+---
+name: toggle-cheatsheet
+description: The plugin for displaying cheat sheet window
+---
 
-### Overview 
+=pod
+
+=head1 toggle-cheatsheet.nvim
+
+=head2 Overview X<toggle-cheatsheet-overview>
 
 toggle-cheatsheet.nvim is a Neovim Lua plugin that provides a cheat sheet window for displaying keymaps and other information. This plugin allows you to easily toggle the cheat sheet window on and off, and it can be configured to persist across tab changes.
 
-### Setup
+=head2 Setup
 
-To use the plugin, you need to call the `setup` function and pass a boolean value indicating whether the cheat sheet should persist across tab changes. It is recommended to set this value to `true` unless you have a specific reason not to.
+To use the plugin, you need to call the C<setup> function and pass a boolean value indicating whether the cheat sheet should persist across tab changes. It is recommended to set this value to C<true> unless you have a specific reason not to.
 
-```
   require('togglecheatsheet').setup(true)
-```
 
-### API References
-#### Configuration
+=head2 Configuration
 
 The plugin provides several functions for configuring and using the cheat sheet window.
 
-#### `conf(easymap)` 
+=head3 C<conf(easymap)> X<toggle-cheatsheet-conf>
 
 Converts a tuple-based "easy" keymap configuration to a "formal" format compatible with the "sirasagi62/nvim-submode" keymap format.
 
-```
   local easymap = {
     {"map1", "desc1"},
     {"map2", "desc2"},
@@ -29,13 +32,11 @@ Converts a tuple-based "easy" keymap configuration to a "formal" format compatib
   }
 
   local formalTbl = require('togglecheatsheet').conf(easymap)
-```
 
-#### `createCheatSheetFromSubmodeKeymap(smKeymap)` 
+=head3 C<createCheatSheetFromSubmodeKeymap(smKeymap)> X<toggle-cheatsheet-create-cheatsheet-from-submode-keymap>
 
 Converts a keymap list in the "formal" format to a text string that can be displayed in the cheat sheet window.
 
-```
   local smKeymap = {
     {map = "map1", desc = "desc1"},
     {map = "map2", desc = "desc2"},
@@ -43,37 +44,32 @@ Converts a keymap list in the "formal" format to a text string that can be displ
   }
 
   local tcsText = require('toggle-cheatsheet').createCheatSheetFromSubmodeKeymap(smKeymap)
-```
 
-### Using the Cheat Sheet Window
+=head2 Using the Cheat Sheet Window
 
 The plugin provides several functions for opening, closing, and toggling the cheat sheet window.
 
-#### `openCheatSheetWin(text)` 
+=head3 C<openCheatSheetWin(text)> X<toggle-cheatsheet-open-cheat-sheet-window>
 
 Opens the cheat sheet window and displays the given text.
 
-```
   require('toggle-cheatsheet').openCheatSheetWin(tcsText)
-```
 
-#### `closeCheatSheetWin()` 
+=head3 C<closeCheatSheetWin()> X<toggle-cheatsheet-close-cheatsheet-window>
 
 Closes the cheat sheet window.
 
-```
   require('toggle-cheatsheet').closeCheatSheetWin()
-```
 
-#### `toggle(text)` 
+=head3 C<toggle(text)> X<toggle-cheatsheet-toggle-window>
 
 Toggles the cheat sheet window on and off. If the window is already open and displaying the same text, it will be closed. Otherwise, it will be opened.
 
-```
   require('toggle-cheatsheet').toggle(tcsText)
-```
 
-### Persistence Cheat Sheet Window Across Tab Changes 
+=head2 Persistence Across Tab Changes X<toggle-cheatsheet-showing-cheatsheet-across-windows>
 
-If the `setup` function is called with `true` as the argument, the cheat sheet window will persist across tab changes. This means that if you switch to a different tab, the cheat sheet window will remain open and displaying the same text.
+If the C<setup> function is called with C<true> as the argument, the cheat sheet window will persist across tab changes. This means that if you switch to a different tab, the cheat sheet window will remain open and displaying the same text.
+
+=cut
 
