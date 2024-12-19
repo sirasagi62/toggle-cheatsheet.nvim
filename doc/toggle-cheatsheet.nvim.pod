@@ -15,7 +15,7 @@ toggle-cheatsheet.nvim is a Neovim Lua plugin that provides a cheat sheet window
 
 To use the plugin, you need to call the C<setup> function and pass a boolean value indicating whether the cheat sheet should persist across tab changes. It is recommended to set this value to C<true> unless you have a specific reason not to.
 
-  require('togglecheatsheet').setup(true)
+  require('toggle-cheatsheet').setup(true)
 
 =head2 Configuration
 
@@ -31,7 +31,7 @@ Converts a tuple-based "easy" keymap configuration to a "formal" format compatib
     -- ...
   }
 
-  local formalTbl = require('togglecheatsheet').conf(easymap)
+  local formalTbl = require('toggle-cheatsheet').conf(easymap)
 
 =head3 C<createCheatSheetFromSubmodeKeymap(smKeymap)> X<toggle-cheatsheet-create-cheatsheet-from-submode-keymap>
 
